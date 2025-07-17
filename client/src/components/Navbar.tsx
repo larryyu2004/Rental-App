@@ -40,7 +40,7 @@ const Navbar = () => {
             <Button
               variant="outline"
               className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg">
-              Sign in
+              Sign In
             </Button>
           </Link>
 
