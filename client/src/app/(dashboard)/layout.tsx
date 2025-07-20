@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import Sidebar from "@/components/AppSidebar";
-import { NAVBAR_HEIGHT } from "@/lib/constants";
+import { NAVBAR_HEIGHT, SIDEBAR_WIDTH } from "@/lib/constants";
 import React, { useEffect, useState } from "react";
 import { useGetAuthUserQuery } from "@/state/api";
 import { usePathname, useRouter } from "next/navigation";
@@ -43,7 +43,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <div style={{ marginTop: `${NAVBAR_HEIGHT}px` }}>
           <main className="flex">
             <Sidebar userType={authUser.userRole.toLowerCase()} />
-            <div className="flex-grow transition-all duration-300">
+            <div className={`flex-grow transition-all duration-300 md:ml-[191.922px]`}
+            >
               {children}
             </div>
           </main>

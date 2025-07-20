@@ -1,4 +1,5 @@
 "use client";
+
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const Navbar = () => {
   const { data: authUser } = useGetAuthUserQuery();
@@ -29,16 +31,24 @@ const Navbar = () => {
     await signOut();
     window.location.href = "/";
   };
+
   return (
     <div
       className="fixed top-0 left-0 w-full z-50 shadow-xl"
-      style={{ height: `${NAVBAR_HEIGHT}px` }}>
-      <div className="flex items-center justify-between w-full py-3 px-8 bg-primary-700 text-white">
+      style={{ height: `${NAVBAR_HEIGHT}px` }}
+    >
+      <div className="flex justify-between items-center w-full py-3 px-8 bg-primary-700 text-white">
         <div className="flex items-center gap-4 md:gap-6">
+          {isDashboardPage && (
+            <div className="md:hidden">
+              <SidebarTrigger />
+            </div>
+          )}
           <Link
             href="/"
             className="cursor-pointer hover:!text-primary-300"
-            scroll={false}>
+            scroll={false}
+          >
             <div className="flex items-center gap-3">
               <Image
                 src="/logo.svg"
@@ -65,7 +75,8 @@ const Navbar = () => {
                     ? "/managers/newproperty"
                     : "/search"
                 )
-              }>
+              }
+            >
               {authUser.userRole?.toLowerCase() === "manager" ? (
                 <>
                   <Plus className="h-4 w-4" />
@@ -92,7 +103,7 @@ const Navbar = () => {
             <>
               <div className="relative hidden md:block">
                 <MessageCircle className="w-6 h-6 cursor-pointer text-primary-200 hover:text-primary-400" />
-                  <span className="absolute top-0 right-0 w-2 h-2 bg-secondary-700 rounded-full"></span>
+                <span className="absolute top-0 right-0 w-2 h-2 bg-secondary-700 rounded-full"></span>
               </div>
               <div className="relative hidden md:block">
                 <Bell className="w-6 h-6 cursor-pointer text-primary-200 hover:text-primary-400" />
@@ -121,7 +132,8 @@ const Navbar = () => {
                           : "/tenants/favorites",
                         { scroll: false }
                       )
-                    }>
+                    }
+                  >
                     Go to Dashboard
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-primary-200" />
@@ -132,12 +144,14 @@ const Navbar = () => {
                         `/${authUser.userRole?.toLowerCase()}s/settings`,
                         { scroll: false }
                       )
-                    }>
+                    }
+                  >
                     Settings
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100"
-                    onClick={handleSignOut}>
+                    onClick={handleSignOut}
+                  >
                     Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -148,15 +162,16 @@ const Navbar = () => {
               <Link href="/signin">
                 <Button
                   variant="outline"
-                  className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg">
+                  className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg"
+                >
                   Sign In
                 </Button>
               </Link>
-
               <Link href="/signup">
                 <Button
                   variant="secondary"
-                  className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 rounded-lg">
+                  className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 rounded-lg"
+                >
                   Sign Up
                 </Button>
               </Link>
