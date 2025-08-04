@@ -126,9 +126,7 @@ const getProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { id } = req.params;
         const property = yield prisma.property.findUnique({
-            where: {
-                id: Number(id),
-            },
+            where: { id: Number(id) },
             include: {
                 location: true,
             },
@@ -145,10 +143,10 @@ const getProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.json(propertyWithCoordinates);
         }
     }
-    catch (error) {
+    catch (err) {
         res
             .status(500)
-            .json({ message: `Error retrieving property: ${error.message}` });
+            .json({ message: `Error retrieving property: ${err.message}` });
     }
 });
 exports.getProperty = getProperty;
@@ -209,10 +207,10 @@ const createProperty = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         res.status(201).json(newProperty);
     }
-    catch (error) {
+    catch (err) {
         res
             .status(500)
-            .json({ message: `Error creating property: ${error.message}` });
+            .json({ message: `Error creating property: ${err.message}` });
     }
 });
 exports.createProperty = createProperty;

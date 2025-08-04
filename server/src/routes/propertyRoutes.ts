@@ -4,12 +4,11 @@ import {
   getProperty,
   createProperty,
 } from "../controllers/propertyControllers";
-import { authMiddleware } from "../middleware/authMiddleware";
 import multer from "multer";
+import { authMiddleware } from "../middleware/authMiddleware";
 
-// Primarily used for file uploads.
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage})
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 

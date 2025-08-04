@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { wktToGeoJSON } from "@terraformer/wkt";
-import { Location } from "@prisma/client";
 import { S3Client } from "@aws-sdk/client-s3";
+import { Location } from "@prisma/client";
 import { Upload } from "@aws-sdk/lib-storage";
 import axios from "axios";
 
@@ -157,13 +157,12 @@ export const getProperty = async (
   try {
     const { id } = req.params;
     const property = await prisma.property.findUnique({
-      where: {
-        id: Number(id),
-      },
+      where: { id: Number(id) },
       include: {
         location: true,
       },
     });
+
     if (property) {
       const coordinates: { coordinates: string }[] =
         await prisma.$queryRaw`SELECT ST_asText(coordinates) as coordinates from "Location" where id = ${property.location.id}`;
@@ -184,10 +183,10 @@ export const getProperty = async (
       };
       res.json(propertyWithCoordinates);
     }
-  } catch (error: any) {
+  } catch (err: any) {
     res
       .status(500)
-      .json({ message: `Error retrieving property: ${error.message}` });
+      .json({ message: `Error retrieving property: ${err.message}` });
   }
 };
 
@@ -215,6 +214,7 @@ export const createProperty = async (
           Body: file.buffer,
           ContentType: file.mimetype,
         };
+
         const uploadResult = await new Upload({
           client: s3Client,
           params: uploadParams,
@@ -234,7 +234,6 @@ export const createProperty = async (
         limit: "1",
       }
     ).toString()}`;
-
     const geocodingResponse = await axios.get(geocodingUrl, {
       headers: {
         "User-Agent": "RealEstateApp (justsomedummyemail@gmail.com",
@@ -286,9 +285,9 @@ export const createProperty = async (
     });
 
     res.status(201).json(newProperty);
-  } catch (error: any) {
+  } catch (err: any) {
     res
       .status(500)
-      .json({ message: `Error creating property: ${error.message}` });
+      .json({ message: `Error creating property: ${err.message}` });
   }
 };
